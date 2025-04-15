@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Joke Quiz Game 😂</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+      background-color: #f0f8ff;
+    }
+
+    h1 {
+      color: #6a5acd;
+    }
+
+    button {
+      margin: 10px;
+      padding: 15px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #6a5acd;
+      color: white;
+    }
+
+    #submitBtn {
+      background-color: #4CAF50;
+    }
+
+    #playAgainBtn {
+      background-color: green;
+      display: none;
+    }
+
+    #question, #feedback, #score {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 18px;
+      width: 300px;
+      margin-top: 10px;
+    }
+
+    .home-btn {
+      margin-top: 30px;
+      background-color: #6a5acd;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>😂 Joke Quiz Game</h1>
+
+  <button onclick="startQuiz()">Start Joke Quiz</button>
+
+  <div id="question"></div>
+  <input type="text" id="answerInput" placeholder="Type your punchline..." style="display:none;">
+  <br>
+  <button id="submitBtn" onclick="submitAnswer()" style="display:none;">Submit</button>
+
+  <div id="feedback"></div>
+  <div id="score"></div>
+
+  <button id="playAgainBtn" onclick="resetQuiz()">🔄 Play Again</button>
+
+  <a href="index.html">
+    <button class="home-btn">🏠 Back to Home</button>
+  </a>
+
+  <script>
+    const jokeQuiz = [
+      { question: "Why did the scarecrow win an award?", answer: "because he was outstanding in his field" },
+      { question: "What do you call fake spaghetti?", answer: "an impasta" },
+      { question: "Why don’t skeletons fight each other?", answer: "they don't have the guts" },
+      { question: "Why did the math book look sad?", answer: "because it had too many problems" },
+      { question: "I'm reading a book about anti-gravity. Why can't I stop?", answer: "it's impossible to put down" }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+
+    function startQuiz() {
+      currentIndex = 0;
+      score = 0;
+      document.getElementById('playAgainBtn').style.display = 'none';
+      document.getElementById('feedback').innerHTML = '';
+      document.getElementById('score').innerHTML = '';
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const joke = jokeQuiz[currentIndex];
+      document.getElementById('question').innerText = `Q${currentIndex + 1}: ${joke.question}`;
+      document.getElementById('answerInput').style.display = 'inline-block';
+      document.getElementById('submitBtn').style.display = 'inline-block';
+      document.getElementById('answerInput').value = '';
+    }
+
+    function submitAnswer() {
+      const userAnswer = document.getElementById('answerInput').value.trim().toLowerCase();
+      const correctAnswer = jokeQuiz[currentIndex].answer.toLowerCase();
+
+      if (userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer)) {
+        score++;
+        document.getElementById('feedback').innerText = "✅ Correct!";
+      } else {
+        score--;
+        document.getElementById('feedback').innerText = `❌ Nope! The answer was: "${jokeQuiz[currentIndex].answer}"`;
+      }
+
+      currentIndex++;
+
+      if (currentIndex < jokeQuiz.length) {
+        setTimeout(() => {
+          document.getElementById('feedback').innerText = '';
+          showQuestion();
+        }, 2000);
+      } else {
+        endQuiz();
+      }
+    }
+
+    function endQuiz() {
+      document.getElementById('question').innerText = "🎉 Quiz Complete!";
+      document.getElementById('answerInput').style.display = 'none';
+      document.getElementById('submitBtn').style.display = 'none';
+      document.getElementById('score').innerText = `Your final score: ${score} / ${jokeQuiz.length}`;
+      document.getElementById('playAgainBtn').style.display = 'inline-block';
+    }
+
+    function resetQuiz() {
+      document.getElementById('feedback').innerText = '';
+      document.getElementById('score').innerText = '';
+      startQuiz();
+    }
+  </script>
+
+</body>
+</html>
